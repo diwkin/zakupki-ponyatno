@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Закупки. Понятно — цифровой помощник по закупкам Самрук-Қазына</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F2A4D;
+  --navy-2:#153A66;
+  --white:#FFFFFF;
+  --fog:#F4F7FA;
+  --fog-2:#E9EEF3;
+  --line:#DCE4EC;
+  --ink:#152238;
+  --muted:#5B6B82;
+  --teal:#0FB5B0;
+  --teal-dark:#0A8F8B;
+  --teal-tint:#E4F8F7;
+  --green:#1FA971;
+  --green-tint:#E6F7EF;
+  --amber:#C77A1F;
+  --amber-tint:#FBF0E1;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 1px 2px rgba(15,42,77,.06), 0 8px 24px -12px rgba(15,42,77,.18);
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--fog);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.disp{
+  font-family:'Manrope',system-ui,sans-serif;
+  color:var(--navy);
+  font-weight:800;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+p{margin:0;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--teal-tint);}
+
+/* ---------- layout shell ---------- */
+.shell{max-width:1180px;margin:0 auto;padding:0 28px;}
+header.topbar{
+  position:sticky;top:0;z-index:40;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 28px;max-width:1180px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Manrope';font-weight:800;font-size:1.05rem;color:var(--navy);white-space:nowrap;}
+.brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,var(--navy),var(--teal));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.brand-mark svg{width:18px;height:18px;}
+nav.mainnav{display:flex;gap:2px;flex-wrap:wrap;}
+nav.mainnav button{
+  border:none;background:transparent;color:var(--muted);
+  font-size:.86rem;font-weight:600;padding:9px 13px;border-radius:999px;
+  transition:background .15s,color .15s;white-space:nowrap;
+}
+nav.mainnav button:hover{background:var(--fog-2);color:var(--navy);}
+nav.mainnav button.active{background:var(--navy);color:#fff;}
+
+main{padding-bottom:80px;}
+.view{display:none;animation:fade .25s ease;}
+.view.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* ---------- reusable ---------- */
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--teal-tint);color:var(--teal-dark);
+  font-size:.76rem;font-weight:700;padding:6px 12px;border-radius:999px;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.pill-btn{
+  background:var(--navy);color:#fff;border:none;border-radius:12px;
+  padding:14px 26px;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;
+  transition:transform .12s, background .15s;
+}
+.pill-btn:hover{background:var(--navy-2);transform:translateY(-1px);}
+.pill-btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line);}
+.pill-btn.ghost:hover{border-color:var(--navy);background:var(--fog-2);}
+.pill-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.tag{display:inline-block;background:var(--fog-2);color:var(--muted);font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;text-transform:none;}
+.section-eyebrow{color:var(--teal-dark);font-weight:700;font-size:.8rem;}
+
+/* ---------- HOME / HERO ---------- */
+.hero{padding:64px 0 40px;}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:52px;align-items:center;}
+.hero h1{font-size:2.6rem;line-height:1.12;}
+.hero .lede{margin-top:16px;color:var(--muted);font-size:1.08rem;max-width:52ch;}
+.hero-search{
+  margin-top:30px;background:var(--white);border:1px solid var(--line);border-radius:18px;
+  padding:22px;box-shadow:var(--shadow);
+}
+.hero-search label{display:block;font-weight:700;color:var(--navy);margin-bottom:10px;font-size:1.02rem;}
+.hero-search-row{display:flex;gap:10px;}
+.hero-search input{
+  flex:1;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;font-size:.98rem;
+  font-family:inherit;background:var(--fog);color:var(--ink);
+}
+.hero-search input:focus{outline:none;border-color:var(--teal);background:#fff;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{
+  border:1px solid var(--line);background:var(--fog);color:var(--muted);
+  border-radius:999px;padding:7px 13px;font-size:.8rem;font-weight:600;
+}
+.chip:hover{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-tint);}
+
+.hero-visual{
+  background:linear-gradient(160deg,var(--navy) 0%, #0B3A5E 55%, var(--teal-dark) 130%);
+  border-radius:22px;padding:30px;color:#fff;position:relative;overflow:hidden;min-height:340px;
+}
+.hero-visual::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 10%, rgba(15,181,176,.35), transparent 55%);}
+.hero-visual .hv-label{position:relative;font-size:.78rem;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:.04em;}
+.route-mini{position:relative;margin-top:22px;display:flex;flex-direction:column;gap:0;}
+.route-mini-step{display:flex;align-items:center;gap:12px;padding:9px 0;}
+.route-mini-step .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);flex-shrink:0;}
+.route-mini-step.done .dot{background:#fff;}
+.route-mini-step .ln{font-size:.86rem;font-weight:600;color:rgba(255,255,255,.65);}
+.route-mini-step.done .ln{color:#fff;}
+.route-mini-line{position:absolute;left:4px;top:12px;bottom:12px;width:1px;background:rgba(255,255,255,.2);}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
+.feature-card{padding:26px;cursor:pointer;transition:transform .15s, box-shadow .15s;}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 4px 8px rgba(15,42,77,.08), 0 16px 32px -12px rgba(15,42,77,.24);}
+.feature-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.feature-icon svg{width:22px;height:22px;}
+.feature-card h3{font-size:1.08rem;margin-bottom:8px;}
+.feature-card p{color:var(--muted);font-size:.9rem;}
+
+.tools-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;}
+.tool-mini{padding:20px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;}
+.tool-mini:hover{border-color:var(--teal);}
+.tool-mini-ic{width:38px;height:38px;border-radius:10px;background:var(--fog-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tool-mini-ic svg{width:18px;height:18px;color:var(--navy);}
+.tool-mini h4{font-size:.95rem;margin-bottom:4px;}
+.tool-mini p{font-size:.82rem;color:var(--muted);}
+
+.section-head{margin:56px 0 22px;display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.section-head h2{font-size:1.5rem;}
+.section-head p{color:var(--muted);font-size:.92rem;}
+
+/* ---------- WIZARD ---------- */
+.wizard-wrap{max-width:820px;margin:0 auto;}
+.progressbar{height:6px;background:var(--fog-2);border-radius:999px;overflow:hidden;margin-bottom:8px;}
+.progressbar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--navy));border-radius:999px;transition:width .3s ease;}
+.progress-label{font-size:.8rem;color:var(--muted);font-weight:600;margin-bottom:28px;}
+.wz-card{padding:36px;}
+.wz-q{font-size:1.3rem;margin-bottom:6px;}
+.wz-sub{color:var(--muted);font-size:.92rem;margin-bottom:24px;}
+.wz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.wz-options.single{grid-template-columns:1fr;}
+.wz-opt{
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px;
+  background:#fff;text-align:left;transition:border-color .15s, background .15s;
+  display:flex;flex-direction:column;gap:4px;
+}
+.wz-opt:hover{border-color:var(--teal);}
+.wz-opt.selected{border-color:var(--teal);background:var(--teal-tint);}
+.wz-opt strong{font-size:.95rem;color:var(--navy);}
+.wz-opt span{font-size:.8rem;color:var(--muted);}
+.wz-input-row{margin-top:4px;}
+.wz-input-row input, .wz-input-row select{
+  width:100%;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;
+  font-size:1rem;font-family:inherit;background:var(--fog);
+}
+.wz-input-row input:focus, .wz-input-row select:focus{outline:none;border-color:var(--teal);background:#fff;}
+.wz-nav{display:flex;justify-content:space-between;margin-top:30px;}
+.wz-checkgroup{display:flex;flex-direction:column;gap:10px;}
+.wz-check{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;}
+.wz-check.selected{border-color:var(--teal);background:var(--teal-tint);}
+.wz-check input{margin-top:3px;}
+.wz-check strong{font-size:.92rem;color:var(--navy);display:block;}
+.wz-check span{font-size:.8rem;color:var(--muted);}
+
+.result-card{padding:36px;}
+.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.result-method{font-size:1.7rem;margin-top:6px;}
+.result-note{margin-top:6px;color:var(--muted);font-size:.9rem;}
+.needs-clarify{background:var(--amber-tint);border:1px solid #EAC98A;color:#8A5A16;border-radius:var(--radius-sm);padding:16px 18px;margin-top:18px;font-size:.9rem;}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px;}
+.result-block h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:var(--teal-dark);margin-bottom:10px;}
+.result-block ul{margin:0;padding-left:18px;color:var(--ink);font-size:.92rem;}
+.result-block ul li{margin-bottom:6px;}
+.result-block.full{grid-column:1/-1;}
+.basis-box{background:var(--fog);border-radius:var(--radius-sm);padding:16px 18px;font-size:.87rem;color:var(--muted);margin-top:26px;}
+.basis-box b{color:var(--navy);}
+
+/* ---------- GUIDED ROUTE ---------- */
+.route-track{display:flex;overflow-x:auto;gap:2px;padding:6px 2px 22px;margin-bottom:6px;}
+.route-node{
+  flex:1;min-width:118px;text-align:center;position:relative;padding-top:26px;cursor:pointer;
+}
+.route-node::before{content:"";position:absolute;top:9px;left:0;right:0;height:2px;background:var(--line);}
+.route-node:first-child::before{left:50%;}
+.route-node:last-child::before{right:50%;}
+.route-node .rn-dot{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:var(--muted);
+  z-index:1;
+}
+.route-node.active .rn-dot{border-color:var(--navy);background:var(--navy);color:#fff;}
+.route-node.done .rn-dot{border-color:var(--teal);background:var(--teal);color:#fff;}
+.route-node.done::before{background:var(--teal);}
+.route-node .rn-label{font-size:.78rem;font-weight:700;color:var(--muted);padding:0 4px;}
+.route-node.active .rn-label{color:var(--navy);}
+
+.route-detail{padding:32px;margin-top:6px;}
+.route-detail-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.route-detail h3{font-size:1.35rem;}
+.route-detail .step-of{font-size:.78rem;color:var(--muted);font-weight:700;}
+.route-detail-body{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.rd-block h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.03em;color:var(--teal-dark);margin-bottom:8px;}
+.rd-block ul{margin:0;padding-left:18px;font-size:.9rem;}
+.rd-block ul li{margin-bottom:6px;}
+.rd-block.full{grid-column:1/-1;}
+.route-arrows{display:flex;justify-content:space-between;margin-top:26px;}
+
+/* ---------- KB ---------- */
+.kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.kb-card{padding:20px;cursor:pointer;}
+.kb-card:hover{border-color:var(--teal);}
+.kb-num{font-size:.72rem;font-weight:800;color:var(--teal-dark);}
+.kb-card h4{font-size:1rem;margin-top:8px;margin-bottom:6px;}
+.kb-card p{font-size:.84rem;color:var(--muted);}
+.kb-detail{padding:36px;}
+.kb-detail-body{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:24px;}
+.kb-block h4{font-size:.8rem;text-transform:uppercase;color:var(--teal-dark);letter-spacing:.03em;margin-bottom:8px;}
+.kb-block p, .kb-block ul{font-size:.92rem;color:var(--ink);margin:0;}
+.kb-block ul{padding-left:18px;}
+.kb-block ul li{margin-bottom:6px;}
+.kb-block.full{grid-column:1/-1;}
+.kb-block.basis{background:var(--fog);padding:14px 16px;border-radius:var(--radius-sm);color:var(--muted);}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--teal-dark);font-weight:700;font-size:.86rem;margin-bottom:18px;border:none;background:none;padding:0;}
+
+/* ---------- SEARCH ---------- */
+.search-wrap{max-width:760px;margin:0 auto;}
+.search-box{display:flex;gap:10px;}
+.search-box input{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;font-size:1rem;font-family:inherit;}
+.search-box input:focus{outline:none;border-color:var(--teal);}
+.search-results{margin-top:22px;display:flex;flex-direction:column;gap:14px;}
+.search-result{padding:20px 22px;}
+.search-result h4{font-size:.98rem;color:var(--navy);margin-bottom:6px;}
+.search-result p{font-size:.88rem;color:var(--ink);}
+.search-result .sr-basis{margin-top:10px;font-size:.78rem;color:var(--teal-dark);font-weight:700;}
+.search-empty{color:var(--muted);text-align:center;padding:40px 0;font-size:.92rem;}
+.search-examples{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+
+/* ---------- CALCULATOR ---------- */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:flex-start;}
+.calc-form{padding:30px;}
+.calc-field{margin-bottom:20px;}
+.calc-field label{display:block;font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:8px;}
+.calc-field input, .calc-field select{
+  width:100%;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:.95rem;font-family:inherit;background:var(--fog);
+}
+.calc-field input:focus, .calc-field select:focus{outline:none;border-color:var(--teal);background:#fff;}
+.calc-hint{font-size:.78rem;color:var(--muted);margin-top:6px;}
+.calc-result{position:sticky;top:90px;padding:30px;min-height:200px;}
+
+/* ---------- CHECKLISTS ---------- */
+.checklist-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.checklist-card{padding:26px;}
+.cl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.cl-head h3{font-size:1.05rem;}
+.cl-pct{font-weight:800;color:var(--teal-dark);font-size:1.05rem;}
+.cl-bar{height:8px;background:var(--fog-2);border-radius:999px;overflow:hidden;margin:12px 0 18px;}
+.cl-bar-fill{height:100%;background:var(--green);border-radius:999px;transition:width .25s;}
+.cl-item{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--fog-2);font-size:.9rem;}
+.cl-item:first-of-type{border-top:none;}
+.cl-item input{margin-top:3px;width:17px;height:17px;accent-color:var(--teal);flex-shrink:0;}
+.cl-item.checked label{color:var(--muted);text-decoration:line-through;}
+.cl-item label{cursor:pointer;}
+
+/* ---------- footer / freshness ---------- */
+.freshness{
+  display:flex;align-items:center;gap:10px;justify-content:center;
+  background:var(--navy);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;text-align:center;
+}
+.freshness b{color:#7EE8E3;}
+footer{border-top:1px solid var(--line);margin-top:70px;padding:34px 0;color:var(--muted);font-size:.82rem;text-align:center;}
+
+@media (max-width: 880px){
+  .hero-grid{grid-template-columns:1fr;}
+  .features{grid-template-columns:1fr;}
+  .tools-row{grid-template-columns:1fr;}
+  .kb-grid{grid-template-columns:1fr 1fr;}
+  .calc-grid{grid-template-columns:1fr;}
+  .checklist-grid{grid-template-columns:1fr;}
+  .result-grid,.kb-detail-body,.route-detail-body{grid-template-columns:1fr;}
+  nav.mainnav{display:none;}
+  .wz-options{grid-template-columns:1fr;}
+}
+@media (max-width:600px){
+  .kb-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="freshness">Нормативная база актуальна на 14 сентября 2026 г. · <b>Порядок закупок, версия 2.16</b>, редакция от 18.02.2026 (протокол Совета директоров №269)</div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Закупки. Понятно
+    </div>
+    <nav class="mainnav">
+      <button data-view="home" class="active">Главная</button>
+      <button data-view="wizard">Мастер закупки</button>
+      <button data-view="guided">Проведи меня</button>
+      <button data-view="kb">База знаний</button>
+      <button data-view="search">Поиск</button>
+      <button data-view="calc">Калькулятор</button>
+      <button data-view="checklists">Чек-листы</button>
+    </nav>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- ============ HOME ============ -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="badge"><span class="badge-dot"></span>Для сотрудников группы «Самрук-Қазына»</span>
+          <h1 style="margin-top:16px;">Расскажите, что нужно купить —<br>мы подскажем, как провести закупку правильно</h1>
+          <p class="lede">Не нужно читать Порядок закупок целиком. Ответьте на несколько простых вопросов и получите понятный пошаговый план — со ссылками на конкретные статьи.</p>
+
+          <div class="hero-search">
+            <label>Что вы хотите закупить?</label>
+            <div class="hero-search-row">
+              <input type="text" id="home-need-input" placeholder="Например: «Нам нужно закупить IT-оборудование на 15 млн ₸»">
+              <button class="pill-btn" id="home-start-btn">Начать →</button>
+            </div>
+            <div class="chips">
+              <button class="chip" data-example="IT-оборудование на 15 млн ₸">IT-оборудование, 15 млн ₸</button>
+              <button class="chip" data-example="Срочный ремонт после аварии">Срочный ремонт после аварии</button>
+              <button class="chip" data-example="Канцтовары на 2 млн ₸">Канцтовары, 2 млн ₸</button>
+              <button class="chip" data-example="Строительно-монтажные работы">СМР по проекту</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hv-label">Маршрут закупки</div>
+          <div class="route-mini" id="hero-route-mini"><div class="route-mini-line"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="card feature-card" data-view="wizard">
+        <div class="feature-icon" style="background:var(--teal-tint);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0A8F8B" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>
+        </div>
+        <h3>Мастер закупки</h3>
+        <p>Ответьте на 8 вопросов о вашей закупке — получите рекомендуемый способ, обоснование и список документов.</p>
+      </div>
+      <div class="card feature-card" data-view="guided">
+        <div class="feature-icon" style="background:var(--fog-2);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0F2A4D" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <h3>Проведи меня по закупке</h3>
+        <p>Пошаговый маршрут от идеи до закрытия договора: чек-лист, документы и типичные ошибки на каждом этапе.</p>
+      </div>
+      <div class="card feature-card" data-view="kb">
+        <div class="feature-icon" style="background:var(--green-tint);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1FA971" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </div>
+        <h3>Правила закупок простым языком</h3>
+        <p>17 тем — от способов закупок до типичных нарушений — объяснены без юридического жаргона.</p>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>Ещё инструменты</h2>
+    </div>
+    <div class="tools-row">
+      <div class="card tool-mini" data-view="search">
+        <div class="tool-mini-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <div><h4>Умный поиск</h4><p>Задайте вопрос своими словами — получите ответ и норму Порядка.</p></div>
+      </div>
+      <div class="card tool-mini" data-view="calc">
+        <div class="tool-mini-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h2M8 15h2M12 15h2M16 15h2"/></svg></div>
+        <div><h4>Определитель способа</h4><p>Быстрый калькулятор: сумма и условия закупки → способ закупки.</p></div>
+      </div>
+      <div class="card tool-mini" data-view="checklists">
+        <div class="tool-mini-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div><h4>Интерактивные чек-листы</h4><p>Отмечайте пункты — узнайте готовность закупки к запуску.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WIZARD ============ -->
+  <section class="view" id="view-wizard">
+    <div class="wizard-wrap">
+      <div class="section-head" style="margin-top:36px;">
+        <div>
+          <span class="section-eyebrow">Мастер закупки</span>
+          <h2 style="margin-top:6px;">Что вы хотите закупить?</h2>
+        </div>
+      </div>
+
+      <div id="wz-progress-wrap">
+        <div class="progressbar"><div class="progressbar-fill" id="wz-bar"></div></div>
+        <div class="progress-label" id="wz-steplabel">Шаг 1 из 8</div>
+      </div>
+
+      <div id="wz-question-host"></div>
+      <div id="wz-result-host"></div>
+    </div>
+  </section>
+
+  <!-- ============ GUIDED ROUTE ============ -->
+  <section class="view" id="view-guided">
+    <div class="section-head" style="margin-top:36px;">
+      <div>
+        <span class="section-eyebrow">Проведи меня по закупке</span>
+        <h2 style="margin-top:6px;">Маршрут закупки: от идеи до закрытия</h2>
+        <p style="margin-top:6px;">Нажмите на любой этап, чтобы увидеть чек-лист, документы и типичные ошибки.</p>
+      </div>
+    </div>
+    <div class="route-track" id="route-track"></div>
+    <div class="card route-detail" id="route-detail"></div>
+  </section>
+
+  <!-- ============ KNOWLEDGE BASE ============ -->
+  <section class="view" id="view-kb">
+    <div id="kb-list-view">
+      <div class="section-head" style="margin-top:36px;">
+        <div>
+          <span class="section-eyebrow">База знаний</span>
+          <h2 style="margin-top:6px;">Правила закупок простым языком</h2>
+        </div>
+      </div>
+      <div class="kb-grid" id="kb-grid"></div>
+    </div>
+    <div id="kb-detail-view" style="display:none;"></div>
+  </section>
+
+  <!-- ============ SEARCH ============ -->
+  <section class="view" id="view-search">
+    <div class="search-wrap">
+      <div class="section-head" style="margin-top:36px;justify-content:center;text-align:center;flex-direction:column;">
+        <span class="section-eyebrow">Поиск по нормативной базе</span>
+        <h2 style="margin-top:6px;">Спросите своими словами</h2>
+      </div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Например: когда можно закупить у одного поставщика?">
+      </div>
+      <div class="search-examples" id="search-examples"></div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATOR ============ -->
+  <section class="view" id="view-calc">
+    <div class="section-head" style="margin-top:36px;">
+      <div>
+        <span class="section-eyebrow">Инструмент</span>
+        <h2 style="margin-top:6px;">Какой способ закупки выбрать?</h2>
+      </div>
+    </div>
+    <div class="calc-grid">
+      <div class="card calc-form" id="calc-form"></div>
+      <div class="card calc-result" id="calc-result"></div>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLISTS ============ -->
+  <section class="view" id="view-checklists">
+    <div class="section-head" style="margin-top:36px;">
+      <div>
+        <span class="section-eyebrow">Чек-листы</span>
+        <h2 style="margin-top:6px;">Проверьте закупку перед следующим шагом</h2>
+      </div>
+    </div>
+    <div class="checklist-grid" id="checklist-grid"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell">
+    Информационный помощник по Порядку осуществления закупок АО «Самрук-Қазына» и организаций Фонда. Носит справочный характер и не заменяет консультацию службы закупок / комплаенс вашей организации. При расхождении текста помощника с текстом Порядка приоритет имеет официальный текст Порядка.
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   DATA
+===================================================================== */
+const MRP = 4325; // 2026
+const fmt = n => new Intl.NumberFormat('ru-RU').format(Math.round(n)) + ' ₸';
+const THRESH = {
+  singleSourceSimple: 1000 * MRP,   // 4 325 000 ₸ — ст.59 п.1 пп.21
+  rfq: 10000 * MRP,                 // 43 250 000 ₸ — ст.49 п.1 пп.1
+  eshop: 20000 * MRP                // 86 500 000 ₸ — ст.58 п.1
+};
+
+const SS_GROUNDS = [
+  {id:'monopoly', label:'Монополист / эксклюзивные права', hint:'Субъект гос./естественной монополии, лицо по закону, обладатель исключительных прав (ИС)', art:'ст.59 п.1 пп.1'},
+  {id:'gov', label:'Услуги госучреждений / единого провайдера', hint:'Госуслуги, услуги госорганов', art:'ст.59 п.1 пп.2'},
+  {id:'unify', label:'Допоставка у того же поставщика', hint:'Для унификации, стандартизации или совместимости с уже закупленным', art:'ст.59 п.1 пп.6'},
+  {id:'emergency', label:'Авария, ЧС, забастовка', hint:'Ликвидация аварий/инцидентов, угроза остановки деятельности', art:'ст.59 п.1 пп.9'},
+  {id:'offtake', label:'Исполнение обязательств по другому конкурентному договору', hint:'В т.ч. офтейк-контракт, обязательства как поставщика', art:'ст.59 п.1 пп.8,11'},
+  {id:'rent', label:'Аренда/приобретение помещений, зданий, земли', hint:'Для уставной деятельности заказчика', art:'ст.59 п.1 пп.14'},
+  {id:'events', label:'Участие в мероприятиях/обучении', hint:'Выставки, семинары, конференции, курсы повышения квалификации', art:'ст.59 п.1 пп.16'},
+  {id:'groupco', label:'Закупка у организации группы Фонда', hint:'У организаций, 50%+ которых принадлежит Фонду', art:'ст.59 п.1 пп.17'},
+  {id:'none', label:'Ничего из перечисленного / не уверен(а)', hint:'', art:''}
+];
+
+// ---- Guided route ----
+const ROUTE = [
+  {
+    title:'Идея закупки', short:'Потребность',
+    explain:'Инициатор потребности фиксирует, что именно нужно и зачем — на основании бизнес-плана, бюджета, плана развития, ремонта, производственной или инвестиционной программы.',
+    checklist:['Определён предмет и объём потребности','Указан источник возникновения потребности','Потребность согласована с бюджетом/планом'],
+    docs:['Заявка / служебная записка от инициатора', 'Обоснование потребности'],
+    actions:['Сформулировать, что и в каком объёме нужно закупить','Указать, из какого документа (бюджет, бизнес-план, ремонт и т.п.) возникает потребность'],
+    mistakes:['Потребность не привязана ни к одному источнику её возникновения','Объём определён «на глаз», без консолидации с другими подразделениями'],
+    basis:'Статья 2 (понятие «источник возникновения потребности»), Статья 11'
+  },
+  {
+    title:'Планирование', short:'План закупок',
+    explain:'Потребность консолидируется и включается в план закупок (годовой, долгосрочный или предварительный), который утверждает первый руководитель заказчика или уполномоченное лицо.',
+    checklist:['Потребность консолидирована с аналогичными потребностями','Позиция включена в план закупок на год','Определены ориентировочные сроки начала процедур'],
+    docs:['Проект плана закупок (форма Приложения №1, №2)','Обоснование сроков начала закупочных процедур'],
+    actions:['Проверить, что позиция есть в утверждённом плане закупок','При срочной необходимости — рассмотреть закупку по предварительному плану'],
+    mistakes:['Закупка проводится без включения в план (кроме случаев предварительного плана)','Объём разбит на части, чтобы обойти пороговые суммы способа закупки — это прямо запрещено'],
+    basis:'Статья 11, Статья 12 (план утверждается в течение 20 раб. дней со дня утверждения источника потребности)'
+  },
+  {
+    title:'Выбор способа', short:'Способ закупки',
+    explain:'Заказчик самостоятельно выбирает способ закупки: тендер (открытый или двухэтапный), запрос ценовых предложений, из одного источника или электронный магазин — с учётом суммы, наличия оснований и категории ТРУ.',
+    checklist:['Рассчитана ориентировочная сумма закупки без НДС','Проверено, есть ли основания для закупки из одного источника','Проверено наличие товара/услуги в электронном магазине (для ПО и электроники из реестра — обязательно)'],
+    docs:['Расчёт стоимости (маркетинговая цена)', 'Обоснование выбранного способа'],
+    actions:['Использовать Мастер закупки или Калькулятор способа на этом сайте','При сомнениях — согласовать выбор со службой закупок/комплаенс'],
+    mistakes:['Выбор способа «по привычке», без проверки актуальных порогов и оснований','Применение запроса ценовых предложений к строительно-монтажным работам с проектно-сметной документацией — это прямо запрещено'],
+    basis:'Статья 29, Статья 49 п.1-2, Статья 58 п.1, Статья 59'
+  },
+  {
+    title:'Подготовка документации', short:'Документы',
+    explain:'Формируются лоты, тендерная документация (или документация для ЗЦП / из одного источника), техническая спецификация, определяется тендерная комиссия.',
+    checklist:['Сформированы лоты','Подготовлена техническая спецификация','Определён состав тендерной/закупочной комиссии (не менее 5 членов для тендера)','Проверено отсутствие указаний на конкретные бренды/производителей (кроме разрешённых исключений)'],
+    docs:['Тендерная документация / объявление о ЗЦП / документация для закупки из одного источника','Техническая спецификация','Проект договора'],
+    actions:['Убедиться, что документация на казахском и русском языках','Определить, нужен ли эксперт или экспертная комиссия для техспецификации'],
+    mistakes:['В документации указан конкретный товарный знак или производитель без законных оснований','Техническая спецификация не соответствует той, по которой считался бюджет'],
+    basis:'Статья 33, 34, 35, 37, 38'
+  },
+  {
+    title:'Проведение закупки', short:'Процедура',
+    explain:'Публикуется объявление, принимаются и вскрываются заявки/ценовые предложения, проводится их рассмотрение согласно установленным срокам.',
+    checklist:['Объявление опубликовано с соблюдением минимального срока','Тендерная документация доступна всем заинтересованным лицам','Приглашены наблюдатели, если сумма превышает пороги (75 и 250 млн ₸)'],
+    docs:['Опубликованное объявление','Протокол вскрытия заявок/ценовых предложений'],
+    actions:['Открытый тендер — публикация не менее чем за 10 календарных дней до вскрытия (5 дней — при повторных закупках)','ЗЦП — не менее чем за 5 рабочих дней до вскрытия (3 дня — при повторных закупках)'],
+    mistakes:['Дата и время вскрытия назначены вне рабочего окна 10:00–18:00 (Астана)','Заявка отклонена без ссылки на конкретное основание из документации'],
+    basis:'Статья 39-40 (тендер), Статья 49-50 (ЗЦП), Статья 35 п.7 (наблюдатели)'
+  },
+  {
+    title:'Определение поставщика', short:'Победитель',
+    explain:'Комиссия рассматривает заявки/предложения, отклоняет несоответствующие требованиям и определяет победителя по наименьшей цене (или по особому порядку оценки, где вес цены — не менее 50%).',
+    checklist:['Все отклонения заявок обоснованы и задокументированы','Итоги закупки утверждены и протокол опубликован','Определён участник, занявший второе место (для тендера/ЗЦП)'],
+    docs:['Протокол итогов закупки','Обоснование отклонения заявок (при наличии)'],
+    actions:['Проверить обеспечение тендерной заявки победителя (до 1% от суммы, 5% — для нерезидентов)','Направить победителю подписанный проект договора в установленный срок'],
+    mistakes:['Победитель определён без учёта приоритета отечественных товаропроизводителей, если он применим','Пропущен срок направления проекта договора победителю'],
+    basis:'Статья 42-43 (тендер), Статья 52-53 (ЗЦП), Статья 58 п.9 (ЭМ), Статья 36 (обеспечение заявки)'
+  },
+  {
+    title:'Договор', short:'Заключение',
+    explain:'Договор о закупках заключается на веб-портале закупок по цене победителя; при необходимости победитель вносит обеспечение исполнения договора и/или возврата аванса.',
+    checklist:['Договор подписан в установленный срок (12 раб. дней с даты публикации протокола, 14 — с нерезидентом)','Обеспечение исполнения договора/возврата аванса внесено (если предусмотрено)','Договор загружен на веб-портал закупок'],
+    docs:['Подписанный договор о закупках','Банковская гарантия / иное обеспечение (при необходимости)'],
+    actions:['Заказчик направляет проект договора в течение 7 раб. дней (но не ранее 3 дней) с даты публикации протокола','Победитель подписывает договор не позднее 5 раб. дней со дня подписания заказчиком'],
+    mistakes:['Победитель не уложился в срок подписания и признан уклонившимся — теряет обеспечение заявки','Не проверены критерии банка, выдавшего гарантию (для крупных сумм обеспечения)'],
+    basis:'Статья 61 (заключение договора), Статья 64 (обеспечение)'
+  },
+  {
+    title:'Исполнение', short:'Поставка',
+    explain:'Заказчик контролирует поставку товаров, выполнение работ, оказание услуг: сроки, качество, объёмы, оплату, а также ведёт претензионную работу при нарушениях.',
+    checklist:['Акты приёмки подписаны в течение 10 раб. дней с даты получения подтверждающих документов','Расчёты произведены в установленные сроки','Изменения договора (если есть) укладываются в допустимые пределы (напр. до 50% по объёму)'],
+    docs:['Акты выполненных работ / приёмки товара','Претензии (при нарушениях)', 'Дополнительное соглашение (при изменении договора)'],
+    actions:['Вести мониторинг поставок, качества и сроков','При необходимости оформить дополнительное соглашение строго по основаниям ст.65'],
+    mistakes:['Изменение условий договора без оснований, предусмотренных Порядком','Просрочка подписания актов или оплаты без фиксации причин'],
+    basis:'Статья 63 (выполнение и мониторинг), Статья 65 (изменение договора), Статья 66 (претензионная работа)'
+  },
+  {
+    title:'Закрытие закупки', short:'Завершение',
+    explain:'После полного исполнения обязательств сторонами договор закрывается; результаты и эффективность поставщика фиксируются для дальнейшей категорийной работы.',
+    checklist:['Все обязательства сторон исполнены и подтверждены документально','Договор закрыт на веб-портале закупок','Эффективность поставщика оценена (при категорийном управлении)'],
+    docs:['Итоговые акты сверки','Отчёт о закрытии договора'],
+    actions:['Убедиться, что обеспечения (гарантии) корректно возвращены/погашены','Зафиксировать опыт работы с поставщиком для будущих закупок'],
+    mistakes:['Договор формально не закрыт, хотя обязательства исполнены','Не оценена эффективность поставщика при повторяющихся закупках по категории'],
+    basis:'Статья 69 (закрытие договора о закупках), Статья 67 (управление эффективностью поставщиков)'
+  }
+];
+
+// ---- Knowledge base ----
+const KB = [
+  {t:'Способы закупок', what:'Порядок предусматривает пять способов выбора поставщика: открытый тендер, двухэтапный (открытый) тендер, запрос ценовых предложений, закупка из одного источника и закупка посредством электронного магазина.', when:'Способ закупки заказчик выбирает самостоятельно для каждой закупки, с учётом суммы, наличия оснований для одного источника и требований закупочной категорийной стратегии (если она утверждена).', todo:['Определить ориентировочную сумму закупки без НДС','Проверить, нет ли законных оснований для закупки из одного источника','Проверить, есть ли товар/услуга в электронном магазине'], limits:['Для товаров и услуг из реестра доверенного ПО и электроники, доступных в электронном магазине, его использование обязательно, а не по выбору','Дробление закупки на части ради занижения суммы под другой способ не допускается'], example:'Закупка ноутбуков на 12 млн ₸ без особых оснований — стандартно рассматривается запрос ценовых предложений (сумма ≤10 000 МРП).', mistakes:['Выбор способа без пересчёта актуальных пороговых сумм в МРП текущего года'], basis:'Статья 29'},
+  {t:'Планирование закупок', what:'Все закупки года должны быть включены в план закупок, сформированный на основе консолидированной потребности заказчика.', when:'Планирование происходит до начала закупочных процедур; допускается предварительный план, если источник потребности ещё не утверждён.', todo:['Консолидировать потребности всех инициаторов','Утвердить план закупок (или предварительный план) у первого руководителя','Опубликовать план на веб-портале закупок'], limits:['Изменения в годовой план допускаются не более 4 раз в месяц (кроме отдельных исключений)','План утверждается в течение 20 рабочих дней со дня утверждения источника потребности'], example:'Позиция «капитальный ремонт кровли» появляется в плане после утверждения плана ремонта на год.', mistakes:['Проведение закупки по позиции, отсутствующей в плане закупок'], basis:'Статья 11, Статья 12'},
+  {t:'Конкурентные закупки (тендер)', what:'Тендер — конкурентный способ, при котором победитель определяется по наименьшей цене среди заявок, соответствующих требованиям тендерной документации.', when:'Применяется, когда сумма закупки выше порогов для запроса ценовых предложений и электронного магазина, либо когда предмет закупки (например, СМР с проектно-сметной документацией) не может закупаться иным способом.', todo:['Сформировать тендерную документацию и техническую спецификацию','Создать тендерную комиссию (не менее 5 членов)','Опубликовать объявление не менее чем за 10 календарных дней до вскрытия заявок'], limits:['Указание в документации конкретных брендов/производителей запрещено, кроме перечисленных Порядком исключений (унификация, ЗКС и др.)','При особом порядке оценки заявок вес цены должен быть не менее 50%'], example:'Закупка партии спецтехники на 300 млн ₸ — открытый тендер с обязательным приглашением наблюдателей НПП «Атамекен» (сумма выше 250 млн ₸).', mistakes:['Назначение вскрытия заявок вне периода 10:00–18:00 по времени Астаны','Отсутствие обоснования при отклонении тендерной заявки'], basis:'Статьи 29, 35, 39-44'},
+  {t:'Закупка из одного источника', what:'Способ, при котором договор заключается напрямую с конкретным поставщиком без конкурентных процедур — только в случаях, прямо перечисленных в Порядке.', when:'Например: монополист, обладатель исключительных прав, авария/ЧС, унификация с уже закупленным, аренда помещений для уставной деятельности, участие в мероприятиях/обучении, сумма закупки по плану не превышает 1 000 МРП.', todo:['Проверить, подпадает ли ситуация под конкретное основание ст.59','Получить решение руководителя (или уполномоченного лица) о закупке из одного источника','Разместить отчёт о закупке на веб-портале не позднее 10 рабочих дней с даты заключения договора'], limits:['Для ряда оснований (аварии, офсетные обязательства, суммы до 1 000 МРП) обязательна проверка отсутствия товара в электронном магазине','Лицо, принявшее решение, несёт персональную ответственность за правомерность выбора этого способа'], example:'Срочная закупка запчастей для ликвидации аварии на электроэнергетическом объекте.', mistakes:['Использование одного источника «для скорости», когда конкурентная закупка объективно была возможна'], basis:'Статья 59'},
+  {t:'Запрос ценовых предложений', what:'Упрощённый конкурентный способ закупки для сумм среднего размера — с более короткими сроками, чем тендер.', when:'Сумма закупки по плану на год без НДС не превышает 10 000 МРП; также применяется для отдельных случаев (аренда каналов связи Last Mile, запчасти для НПЗ в аварийных ситуациях).', todo:['Сформировать объявление и техническую спецификацию (при необходимости)','Опубликовать не менее чем за 5 рабочих дней до вскрытия ценовых предложений','Определить победителя по наименьшей цене'], limits:['Не применяется для строительно-монтажных работ с готовой проектно-сметной документацией и для комплексных работ','Дробление объёма закупки, чтобы уложиться в 10 000 МРП, запрещено'], example:'Закупка офисной мебели на 8 млн ₸.', mistakes:['Применение ЗЦП к работам, для которых уже есть утверждённая проектно-сметная документация'], basis:'Статьи 49-57'},
+  {t:'Электронные закупки (Электронный магазин)', what:'Закупка товаров, работ и услуг через каталог электронного магазина, где победитель определяется автоматически по наименьшей цене.', when:'Сумма однородных ТРУ по плану на год не превышает 20 000 МРП и товар/услуга относится к категории, утверждённой Правлением Фонда для закупки через ЭМ.', todo:['Сформировать в личном кабинете перечень ТРУ, закупаемых через ЭМ','Заполнить электронный заказ на поставку','Подписать заказ/договор в установленные сроки (3 рабочих дня заказчику, 2 — поставщику товара)'], limits:['Для товаров и ИКТ-услуг из реестра доверенного ПО и электроники, при их наличии в ЭМ, использование электронного магазина обязательно','Срок предложений поставщиков — от 3 до 24 часов с момента направления заказа'], example:'Закупка канцелярских товаров, представленных в каталоге электронного магазина.', mistakes:['Включение в один заказ товаров из разных категорий ЭМ — это не допускается'], basis:'Статья 58'},
+  {t:'Требования к поставщикам', what:'Тендерная документация задаёт квалификационные и технические требования, которым должен соответствовать потенциальный поставщик, без указания на конкретные бренды или производителей.', when:'Формируются на этапе подготовки тендерной документации / документации ЗЦП, соразмерно предмету и объёму закупки.', todo:['Сформулировать требования по опыту, ресурсам, финансовой устойчивости — соразмерно предмету закупки','Проверить, не указывает ли документация прямо или косвенно на конкретного поставщика'], limits:['Указание товарных знаков, патентов, наименования производителя запрещено, кроме перечисленных исключений (унификация, ЗКС, обязательства перед нерезидентом и др.)'], example:'Требование о наличии сервисного центра в Казахстане — допустимо; требование конкретной марки оборудования — как правило, нет.', mistakes:['Формулировка требований «под одного поставщика»'], basis:'Статья 35 п.7'},
+  {t:'Квалификационные требования и ПКО', what:'Предварительный квалификационный отбор (ПКО) — механизм заблаговременной проверки потенциальных поставщиков, которые затем формируют Реестр квалифицированных потенциальных поставщиков (Реестр КПП).', when:'Применяется по товарам/работам/услугам (категориям), определённым для закупки среди квалифицированных потенциальных поставщиков, в том числе по Номенклатуре.', todo:['Подать заявление и анкету потенциального поставщика','Пройти рассмотрение анкеты и, при необходимости, аудит','Поддерживать актуальность досье для сохранения статуса в Реестре КПП'], limits:['При закупках по Номенклатуре первоначально участвуют только поставщики из Реестра КПП, при наличии не менее 2 квалифицированных поставщиков'], example:'Поставщик проходит ПКО один раз и затем участвует в закупках соответствующей категории без повторной проверки каждый раз.', mistakes:['Пропуск сроков актуализации досье — ведёт к исключению из Реестра КПП'], basis:'Статьи 14-25'},
+  {t:'Техническая спецификация', what:'Документ, детально описывающий, что именно закупается: характеристики товара, объём и условия работ или услуг — основа для расчёта бюджета и оценки заявок.', when:'Разрабатывается на этапе подготовки к закупке, до публикации объявления; должна соответствовать той спецификации, по которой считалась маркетинговая цена и формировался бюджет.', todo:['Описать характеристики ТРУ измеримо и без отсылки к конкретному бренду','При необходимости привлечь экспертную комиссию для разработки спецификации','Синхронизировать спецификацию с бюджетом/маркетинговой ценой'], limits:['Требование образцов товаров обязывает привлечь экспертную комиссию (эксперта)'], example:'Технические характеристики компьютерной техники: процессор, объём памяти, срок гарантии — без указания конкретной модели.', mistakes:['Спецификация «списана» с сайта конкретного производителя'], basis:'Статья 35 (техническая спецификация)'},
+  {t:'Договоры о закупках', what:'Договор о закупках — гражданско-правовой договор, который заключается по итогам выбора поставщика в соответствии с Законом, ГК РК и Порядком, как правило — на веб-портале закупок.', when:'После утверждения и публикации протокола итогов закупки; сроки подписания зависят от способа закупки.', todo:['Направить/получить подписанный проект договора в установленный срок','Подписать договор в течение 12 рабочих дней с даты публикации протокола (14 — с нерезидентом; 10 — для одного источника)','Загрузить бумажную копию договора на портал (если договор подписан на бумаге)'], limits:['Договор на бумаге допускается только в отдельных случаях: с нерезидентом, в рамках ЗКС, в виде EPC-контракта'], example:'После победы в тендере поставщик обязан подписать договор не позднее 5 рабочих дней со дня подписания его заказчиком.', mistakes:['Пропуск срока подписания — признаётся уклонением от заключения договора, обеспечение заявки удерживается'], basis:'Статья 61'},
+  {t:'Обеспечение заявки', what:'Гарантия того, что участник не отзовёт заявку и, в случае победы, заключит договор и внесёт обеспечение исполнения — в виде электронной банковской гарантии или денег на электронном кошельке.', when:'Устанавливается тендерной документацией по усмотрению заказчика; не является обязательным элементом каждой закупки.', todo:['Внести обеспечение в размере, указанном в тендерной документации','Отслеживать сроки возврата обеспечения после подписания протокола/договора'], limits:['Размер — не более 1% от суммы лота; для нерезидентов — 5% от суммы лота','Возврат — в течение 10 рабочих дней с момента наступления соответствующего случая (отзыв заявки, подписание протокола и т.д.)'], example:'Лот на 50 млн ₸ — обеспечение заявки не более 500 тыс. ₸.', mistakes:['Победитель не внёс обеспечение исполнения договора в срок — теряет обеспечение заявки'], basis:'Статья 36'},
+  {t:'Обеспечение исполнения договора', what:'Банковская гарантия или иное обеспечение (в т.ч. страховой договор), гарантирующее исполнение обязательств поставщика по договору или возврат выплаченного аванса.', when:'Требуется, если это предусмотрено условиями закупки и договором, особенно при выплате аванса (предоплаты).', todo:['Предоставить обеспечение в срок не более 20 рабочих дней со дня заключения договора','Для долгосрочных договоров — обеспечить исполнение на весь срок либо на соответствующий год, согласно условиям'], limits:['Банковские гарантии на сумму свыше 170 000 МРП принимаются только от банков, отвечающих установленным критериям надёжности (пруденциальные нормативы, кредитный рейтинг)'], example:'При авансе в 30% от суммы долгосрочного договора поставщик ежегодно продлевает обеспечение возврата аванса.', mistakes:['Обеспечение не предоставлено в срок — заказчик вправе не выплачивать аванс'], basis:'Статья 64'},
+  {t:'Изменение договора', what:'Договор о закупках может быть изменён по взаимному согласию сторон только в случаях, прямо перечисленных в Порядке — например, изменение цены, объёма или сроков.', when:'Например: снижение рыночных цен, изменение проектно-сметной документации, изменение объёма товаров/работ в пределах 50% от плана при неизменной цене за единицу, изменение налогового/таможенного законодательства.', todo:['Проверить, подпадает ли нужное изменение под один из оснований ст.65','Подготовить обоснование и подтверждающие документы','Оформить дополнительное соглашение'], limits:['Увеличение суммы и объёма по лоту не должно превышать 50% от первоначальных значений','Увеличение цены товара у товаропроизводителя из-за роста стоимости сырья допускается не чаще раза в квартал и не более двух раз в год'], example:'Увеличение объёма закупаемых труб на 20% при неизменной цене за метр — в пределах утверждённого плана.', mistakes:['Изменение цены за единицу товара/работы под видом «изменения объёма»'], basis:'Статья 65'},
+  {t:'Приёмка товаров, работ и услуг', what:'Заказчик проверяет и подтверждает поставку (выполнение, оказание) актом либо обоснованно отказывает в приёмке.', when:'После получения от поставщика документов, подтверждающих поставку/выполнение/оказание.', todo:['Подписать акт приёмки (или мотивированный отказ) в течение 10 рабочих дней с даты получения документов','Провести окончательный расчёт в срок не более 5 рабочих дней после подписания актов (для товаропроизводителей — тоже 5 дней)'], limits:['При сопутствующих работах/услугах удержание оплаты за них не должно превышать 20% от суммы договора'], example:'Поставка партии оборудования — заказчик проверяет комплектность и подписывает акт приёмки.', mistakes:['Отказ в приёмке без указания конкретных аргументированных оснований'], basis:'Статья 63'},
+  {t:'Отмена и пересмотр итогов, обращения', what:'Итоги закупки (тендера, ЗЦП) могут быть отменены или пересмотрены в установленных Порядком случаях; по вопросам предварительного квалификационного отбора можно подавать обращения.', when:'При выявлении нарушений процедуры, необходимости повторных закупок после признания закупки несостоявшейся, либо по обращениям о несоответствии квалифицированного поставщика.', todo:['Зафиксировать основание для отмены/пересмотра итогов','При повторных закупках — учесть сокращённые сроки публикации объявления (5 дней вместо 10 — для тендера, 3 вместо 5 — для ЗЦП)'], limits:['Общей публичной процедуры обжалования итогов закупок, аналогичной госзакупкам, Порядок не предусматривает — вопросы решаются через отмену/пересмотр итогов и внутренний контроль'], example:'Тендер признан несостоявшимся из-за отсутствия заявок — заказчик вправе провести повторную закупку по сокращённым срокам.', mistakes:['Проведение повторной закупки без анализа причины несостоявшейся закупки'], basis:'Статьи 44, 54, 25'},
+  {t:'Типичные нарушения и ошибки', what:'Наиболее частые системные ошибки при закупках связаны с обходом конкурентных процедур, недостаточным обоснованием решений и нарушением сроков.', when:'Актуально на всех этапах — от планирования до закрытия договора.', todo:['Сверяться с чек-листами на каждом этапе маршрута закупки','Документировать обоснования всех ключевых решений (выбор способа, отклонение заявок, изменение договора)'], limits:['Нарушение запрета на лоббирование интересов отдельных поставщиков влечёт признание закупки недействительной'], example:'Дробление закупки однородных товаров на несколько мелких лотов, чтобы обойтись без тендера — прямое нарушение.', mistakes:['Дробление закупок для занижения суммы под более простой способ','Указание бренда/производителя без законных оснований','Закупка из одного источника без надлежащего основания и обоснования','Нарушение сроков публикации, подписания договора, оплаты'], basis:'Статья 29 п.11 (запрет лоббирования), Статья 49 п.2 (запрет дробления)'},
+  {t:'Ответственность', what:'Лицо, принявшее необоснованное решение о закупке (в первую очередь — о закупке из одного источника), несёт персональную ответственность за неправомерность применения способа закупки.', when:'При выявлении нарушений в рамках внутреннего контроля/аудита закупочной деятельности.', todo:['Обеспечивать документальное обоснование каждого ключевого решения по закупке','Согласовывать со службой комплаенс закупки, требующие такого согласования (напр. ряд оснований ст.59)'], limits:['Закупки, проведённые с нарушением запрета на лоббирование интересов, признаются недействительными в соответствии с законодательством РК'], example:'Решение о закупке из одного источника без ссылки на конкретное основание ст.59 — риск персональной ответственности принявшего решение лица.', mistakes:['Отсутствие письменного обоснования решения','Несогласование с комплаенс там, где оно обязательно'], basis:'Статья 59 п.3, Статья 29 п.11'}
+];
+
+// ---- Checklists ----
+const CHECKLISTS = [
+  {
+    title:'Проверьте закупку перед публикацией',
+    items:[
+      'Закупка включена в план закупок',
+      'Определён предмет закупки',
+      'Определены объёмы закупки',
+      'Подготовлена техническая спецификация',
+      'Проверены квалификационные требования к поставщикам',
+      'Выбран корректный способ закупки (сумма и основания проверены)',
+      'Подготовлена необходимая документация (тендерная / ЗЦП / из одного источника)',
+      'Проверены сроки публикации и вскрытия заявок',
+      'Проверены основания и ограничения по выбранному способу'
+    ]
+  },
+  {
+    title:'Готовность к заключению договора',
+    items:[
+      'Протокол итогов закупки опубликован',
+      'Проект договора направлен победителю в установленный срок',
+      'Проверено обеспечение тендерной заявки победителя',
+      'Определена необходимость обеспечения исполнения договора / возврата аванса',
+      'Согласованы условия оплаты и сроки поставки',
+      'Договор загружен на веб-портал закупок (если подписан на бумаге)'
+    ]
+  },
+  {
+    title:'Проверка перед изменением договора',
+    items:[
+      'Основание изменения соответствует одному из пунктов статьи 65',
+      'Изменение объёма не превышает 50% от первоначального',
+      'Цена за единицу товара/работы/услуги не меняется (если это условие применимо)',
+      'Подготовлено письменное обоснование изменения',
+      'Изменение укладывается в суммы, предусмотренные планом закупок',
+      'Оформлено дополнительное соглашение к договору'
+    ]
+  },
+  {
+    title:'Закрытие договора о закупках',
+    items:[
+      'Все акты приёмки подписаны сторонами',
+      'Произведён окончательный расчёт по договору',
+      'Обеспечения (гарантии) возвращены или погашены',
+      'Отчёт о закупке из одного источника размещён (если применимо)',
+      'Договор закрыт на веб-портале закупок',
+      'Оценена эффективность поставщика (при категорийном управлении)'
+    ]
+  }
+];
+
+// ---- Search Q&A dataset (curated, real citations) ----
+const QA = [
+  {q:'Когда можно провести закупку у одного поставщика?', a:'Закупка из одного источника допускается только в случаях, прямо перечисленных в Порядке: монополист или обладатель исключительных прав, услуги госорганов, унификация с уже закупленным, авария/ЧС, аренда помещений для уставной деятельности, участие в мероприятиях/обучении, а также если сумма однородных ТРУ по плану на год не превышает 1 000 МРП (для 2026 года — '+fmt(THRESH.singleSourceSimple)+').', basis:'Статья 59'},
+  {q:'Можно ли изменить договор о закупках?', a:'Да, но только по основаниям, прямо перечисленным в Порядке: снижение цены, изменение проектно-сметной документации, изменение объёма в пределах 50% при неизменной цене за единицу, изменения законодательства и ряд других случаев. Изменения оформляются дополнительным соглашением по взаимному согласию сторон.', basis:'Статья 65'},
+  {q:'Нужно купить оборудование срочно — какой способ выбрать?', a:'Если срочность связана с аварией, ЧС или угрозой остановки деятельности — доступна закупка из одного источника (с обязательной проверкой отсутствия товара в электронном магазине). Если срочность иного характера — стоит рассмотреть запрос ценовых предложений (до 10 000 МРП) или электронный магазин: сроки короче, чем у тендера.', basis:'Статья 59 п.1 пп.9, Статья 49, Статья 58'},
+  {q:'Какой порог для запроса ценовых предложений?', a:'Запрос ценовых предложений применяется, если сумма закупки товаров, работ и услуг по плану закупок на год без учёта НДС не превышает 10 000 МРП — для 2026 года это '+fmt(THRESH.rfq)+'.', basis:'Статья 49 п.1 пп.1'},
+  {q:'Какой порог для электронного магазина?', a:'Общая сумма однородных ТРУ, закупаемых через электронный магазин по плану на год без НДС, не должна превышать 20 000 МРП — для 2026 года это '+fmt(THRESH.eshop)+', и товар/услуга должны относиться к категории, утверждённой Правлением Фонда для закупки через ЭМ.', basis:'Статья 58 п.1'},
+  {q:'Что делать, если конкурс (тендер) не состоялся?', a:'Заказчик вправе провести повторную закупку способом открытого тендера с сокращённым сроком публикации объявления — не менее 5 календарных дней до даты вскрытия заявок вместо обычных 10. Также можно изменить условия закупки либо перейти на другой способ, предусмотренный Порядком.', basis:'Статья 40 п.1, Статья 44'},
+  {q:'Какой размер обеспечения тендерной заявки?', a:'Обеспечение тендерной заявки устанавливается тендерной документацией в размере не более 1% от суммы лота; для потенциальных поставщиков-нерезидентов — 5% от суммы лота.', basis:'Статья 36 п.3'},
+  {q:'В какой срок нужно подписать договор после тендера?', a:'Договор о закупках заключается на веб-портале закупок в течение 12 рабочих дней со дня публикации протокола итогов закупки (14 рабочих дней — при заключении договора с нерезидентом РК). Для закупки из одного источника срок — 10 рабочих дней с даты решения/протокола.', basis:'Статья 61 п.2, п.6'},
+  {q:'Можно ли указывать в закупке конкретный бренд или производителя?', a:'По общему правилу нет — тендерная документация не должна содержать указаний на товарные знаки, патенты, наименование производителя. Исключения: унификация/совместимость с имеющимся оборудованием, требования закупочной категорийной стратегии, обязательства перед нерезидентом по существующему договору и ряд других прямо перечисленных случаев.', basis:'Статья 35 п.7'},
+  {q:'Что такое дробление закупок и почему это запрещено?', a:'Дробление — это искусственное разбиение объёма однородных товаров, работ или услуг, запланированных на год, на части, чтобы уложиться в порог более простого способа закупки (например, 10 000 МРП для ЗЦП). Порядок прямо запрещает это.', basis:'Статья 49 п.2'},
+  {q:'Нужно ли приглашать наблюдателей на тендер?', a:'Да, при тендерах на сумму свыше 75 млн ₸ без НДС нужно пригласить представителей общественных объединений/советов, а при сумме свыше 250 млн ₸ без НДС — также представителя Национальной палаты предпринимателей «Атамекен». Если кандидатура не представлена в течение 5 рабочих дней, закупка проводится без наблюдателей.', basis:'Статья 35'},
+  {q:'Сколько человек должно быть в тендерной комиссии?', a:'Тендерная комиссия формируется в составе не менее пяти членов: председатель, заместитель председателя и другие члены.', basis:'Статья 35'},
+  {q:'Что делать, если поставщик уклонился от подписания договора?', a:'Такой потенциальный поставщик признаётся уклонившимся от заключения договора, а внесённое им обеспечение тендерной заявки удерживается заказчиком. Победителем может быть признан участник, занявший второе место.', basis:'Статья 61 п.5, Статья 43'},
+  {q:'На сколько можно увеличить объём закупки по договору без нового тендера?', a:'Сумму и объём договора можно увеличить или уменьшить не более чем на 50% от первоначально запланированных в плане закупок значений, при условии неизменности цены за единицу товара, работы или услуги.', basis:'Статья 65 п.1 пп.4'},
+  {q:'Кто отвечает за неправомерную закупку из одного источника?', a:'Лицо, принявшее решение о закупке из одного источника, несёт персональную ответственность за неправомерность применения этого способа закупки.', basis:'Статья 59 п.3'}
+];
+
+/* =====================================================================
+   NAVIGATION
+===================================================================== */
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('nav.mainnav button').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-view]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    showView(el.dataset.view);
+    if(el.dataset.view==='wizard') startWizard();
+  });
+});
+document.getElementById('home-start-btn').addEventListener('click', ()=>{ showView('wizard'); startWizard(); });
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.getElementById('home-need-input').value = c.dataset.example;
+}));
+
+/* hero mini route */
+(function(){
+  const host = document.getElementById('hero-route-mini');
+  ROUTE.forEach((r,i)=>{
+    const d = document.createElement('div');
+    d.className = 'route-mini-step'+(i<3?' done':'');
+    d.innerHTML = `<span class="dot"></span><span class="ln">${r.title}</span>`;
+    host.appendChild(d);
+  });
+})();
+
+/* =====================================================================
+   WIZARD
+===================================================================== */
+const wzState = {step:0, need:'', amount:null, category:'standard', urgency:'planned', groundIds:[], hasExisting:false, eshopKnown:'unknown', producerPriority:'unknown'};
+
+const WZ_STEPS = [
+  {key:'need', q:'Что вы закупаете?', sub:'Кратко опишите предмет закупки.', type:'text', placeholder:'Например: серверное оборудование'},
+  {key:'amount', q:'Какова ориентировочная стоимость?', sub:'Сумма в тенге, без учёта НДС, за год по плану закупок.', type:'amount'},
+  {key:'special', q:'Есть ли особенности закупки?', sub:'Выберите вариант, который ближе всего к вашей ситуации.', type:'single', options:[
+      {id:'standard', label:'Обычный товар/работа/услуга', hint:'Нет особых условий'},
+      {id:'smr', label:'СМР с проектно-сметной документацией', hint:'Строительно-монтажные работы по утверждённому проекту'},
+      {id:'complex', label:'Комплексные работы', hint:'Проектирование + изыскания + СМР одним договором'},
+      {id:'itreg', label:'ПО / электроника из реестра доверенных', hint:'Категория из реестра, формируемого уполномоченным органом'}
+  ]},
+  {key:'groundIds', q:'Есть ли основания для закупки у конкретного поставщика?', sub:'Отметьте, если применимо. Можно не выбирать ничего.', type:'multi', options: SS_GROUNDS.filter(g=>g.id!=='none')},
+  {key:'hasExisting', q:'Есть ли уже действующий договор или рамочное соглашение по этому предмету закупки?', sub:'Например, нужна допоставка у того же поставщика.', type:'single', options:[
+      {id:'yes', label:'Да', hint:'Требуется унификация/совместимость с уже закупленным'},
+      {id:'no', label:'Нет', hint:'Закупка проводится впервые или у нового поставщика'}
+  ]},
+  {key:'urgency', q:'Насколько срочно нужна закупка?', sub:'', type:'single', options:[
+      {id:'planned', label:'Планово', hint:'Обычные сроки закупочных процедур'},
+      {id:'urgent', label:'Срочно, но не авария', hint:'Желательно сократить сроки, но не критично'},
+      {id:'emergency', label:'Авария / ЧС / угроза остановки деятельности', hint:'Требуется немедленное реагирование'}
+  ]},
+  {key:'eshopKnown', q:'Проверяли ли вы наличие товара/услуги в электронном магазине?', sub:'', type:'single', options:[
+      {id:'yes-available', label:'Да, есть в электронном магазине', hint:''},
+      {id:'yes-not-available', label:'Да, проверяли — отсутствует', hint:''},
+      {id:'unknown', label:'Не проверяли', hint:''}
+  ]},
+  {key:'producerPriority', q:'Есть ли отечественный товаропроизводитель закупаемого товара?', sub:'Это влияет на приоритет при закупках товаров тендером/ЗЦП.', type:'single', options:[
+      {id:'yes', label:'Да, один и более', hint:''},
+      {id:'no', label:'Нет / закупаются работы или услуги', hint:''},
+      {id:'unknown', label:'Не уверен(а)', hint:''}
+  ]}
+];
+
+function startWizard(){
+  wzState.step = 0;
+  wzState.need = document.getElementById('home-need-input').value || '';
+  document.getElementById('wz-result-host').innerHTML='';
+  document.getElementById('wz-progress-wrap').style.display='block';
+  renderWizardStep();
+}
+
+function renderWizardStep(){
+  const total = WZ_STEPS.length;
+  const s = WZ_STEPS[wzState.step];
+  document.getElementById('wz-bar').style.width = ((wzState.step)/total*100)+'%';
+  document.getElementById('wz-steplabel').textContent = `Шаг ${wzState.step+1} из ${total}`;
+
+  let html = `<div class="card wz-card"><div class="wz-q">${s.q}</div>`;
+  if(s.sub) html += `<div class="wz-sub">${s.sub}</div>`;
+
+  if(s.type==='text'){
+    html += `<div class="wz-input-row"><input type="text" id="wz-input-need" placeholder="${s.placeholder}" value="${wzState.need||''}"></div>`;
+  } else if(s.type==='amount'){
+    html += `<div class="wz-input-row"><input type="number" id="wz-input-amount" placeholder="Например: 15000000" value="${wzState.amount||''}"></div>
+      <div class="calc-hint">1 МРП (2026 г.) = ${fmt(MRP)}. Пороги: до ${fmt(THRESH.singleSourceSimple)} — упрощённый один источник, до ${fmt(THRESH.rfq)} — запрос ценовых предложений, до ${fmt(THRESH.eshop)} — электронный магазин.</div>`;
+  } else if(s.type==='single'){
+    html += `<div class="wz-options">`;
+    s.options.forEach(o=>{
+      const sel = wzState[s.key]===o.id ? 'selected':'';
+      html += `<button class="wz-opt ${sel}" data-key="${s.key}" data-val="${o.id}"><strong>${o.label}</strong>${o.hint?`<span>${o.hint}</span>`:''}</button>`;
+    });
+    html += `</div>`;
+  } else if(s.type==='multi'){
+    html += `<div class="wz-checkgroup">`;
+    s.options.forEach(o=>{
+      const checked = wzState.groundIds.includes(o.id) ? 'checked':'';
+      const sel = wzState.groundIds.includes(o.id) ? 'selected':'';
+      html += `<label class="wz-check ${sel}"><input type="checkbox" data-ground="${o.id}" ${checked}><span><strong>${o.label}</strong>${o.hint?`<span> — ${o.hint}</span>`:''}</span></label>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="wz-nav">
+      <button class="pill-btn ghost" id="wz-back">${wzState.step===0?'На главную':'Назад'}</button>
+      <button class="pill-btn" id="wz-next">${wzState.step===total-1?'Показать результат':'Далее →'}</button>
+    </div></div>`;
+
+  document.getElementById('wz-question-host').innerHTML = html;
+
+  // wire up
+  if(s.type==='single'){
+    document.querySelectorAll('.wz-opt').forEach(b=>b.addEventListener('click',()=>{
+      wzState[s.key]=b.dataset.val;
+      renderWizardStep();
+    }));
+  }
+  if(s.type==='multi'){
+    document.querySelectorAll('[data-ground]').forEach(cb=>cb.addEventListener('change',()=>{
+      const id = cb.dataset.ground;
+      if(cb.checked){ if(!wzState.groundIds.includes(id)) wzState.groundIds.push(id); }
+      else { wzState.groundIds = wzState.groundIds.filter(x=>x!==id); }
+      renderWizardStep();
+    }));
+  }
+  document.getElementById('wz-back').addEventListener('click', ()=>{
+    if(wzState.step===0){ showView('home'); } else { wzState.step--; renderWizardStep(); }
+  });
+  document.getElementById('wz-next').addEventListener('click', ()=>{
+    if(s.type==='text') wzState.need = document.getElementById('wz-input-need').value;
+    if(s.type==='amount') wzState.amount = parseFloat(document.getElementById('wz-input-amount').value)||null;
+    if(s.key==='special') wzState.category = wzState.special;
+    if(wzState.step < WZ_STEPS.length-1){ wzState.step++; renderWizardStep(); }
+    else { finishWizard(); }
+  });
+}
+
+function finishWizard(){
+  document.getElementById('wz-progress-wrap').style.display='none';
+  document.getElementById('wz-question-host').innerHTML='';
+  const input = {
+    amount: wzState.amount,
+    special: wzState.special || 'standard',
+    groundIds: wzState.groundIds,
+    hasExisting: wzState.hasExisting,
+    urgency: wzState.urgency,
+    eshopKnown: wzState.eshopKnown,
+    producerPriority: wzState.producerPriority
+  };
+  const res = decideMethod(input);
+  document.getElementById('wz-result-host').innerHTML = renderResultCard(res, wzState.need);
+  const retry = document.getElementById('wz-retry-btn');
+  if(retry) retry.addEventListener('click', startWizard);
+}
+
+/* =====================================================================
+   DECISION ENGINE (shared by wizard + calculator)
+===================================================================== */
+function decideMethod(input){
+  const amount = input.amount;
+  const grounds = input.groundIds || [];
+  const special = input.special || 'standard';
+  const clarifications = [];
+  let method, why=[], conditions=[], docs=[], steps=[], responsible='Инициатор потребности совместно с организатором закупок', risks=[], checkBefore=[], basis=[];
+
+  // 1) Explicit single-source grounds selected
+  if(grounds.length>0 && input.hasExisting!=='no-override'){
+    const groundObjs = SS_GROUNDS.filter(g=>grounds.includes(g.id));
+    method = 'Закупка из одного источника';
+    why.push('Указаны основания, прямо предусмотренные статьёй 59 Порядка: '+groundObjs.map(g=>g.label.toLowerCase()).join(', ')+'.');
+    conditions.push('Решение о закупке из одного источника принимает руководитель исполнительного органа заказчика или уполномоченное им лицо.');
+    if(groundObjs.some(g=>['emergency','offtake'].includes(g.id))){
+      conditions.push('Перед применением этого основания нужно убедиться в отсутствии товара/услуги в электронном магазине на день принятия решения.');
+      if(input.eshopKnown==='unknown') clarifications.push('Вы не проверяли наличие товара в электронном магазине — для оснований «авария/ЧС» и подобных это обязательная проверка перед закупкой из одного источника.');
+    }
+    docs.push('Решение о закупке из одного источника (веб-портал закупок, подписывается ЭЦП)','Обоснование применения основания','Проект договора');
+    steps.push('Зафиксировать основание и подготовить обоснование','Получить решение уполномоченного лица','Заключить договор в течение 10 рабочих дней (20 — с нерезидентом)','Разместить отчёт о закупке не позднее 10 рабочих дней с даты заключения договора');
+    risks.push('Признание закупки неправомерной, если основание применено формально','Персональная ответственность лица, принявшего решение');
+    checkBefore.push('Основание действительно соответствует перечню ст.59, а не выбрано «для удобства»','Требуется ли согласование со службой комплаенс (для ряда оснований — обязательно)');
+    basis.push('Статья 59');
+  }
+  // 2) Mandatory e-shop for IT/electronics registry
+  else if(special==='itreg' && input.eshopKnown==='yes-available'){
+    method = 'Электронный магазин (обязательно)';
+    why.push('Закупаемый товар/услуга относится к категории программного обеспечения или продукции электронной промышленности из реестра доверенного ПО, и он есть в электронном магазине — в этом случае использование электронного магазина обязательно, а не по выбору.');
+    conditions.push('Товар/услуга должны относиться к категории, утверждённой Правлением Фонда для закупки через ЭМ.');
+    docs.push('Перечень ТРУ, закупаемых через ЭМ (личный кабинет)','Электронный заказ на поставку');
+    steps.push('Сформировать заказ на поставку в каталоге ЭМ','Дождаться предложений поставщиков (от 3 до 24 часов)','Подписать заказ/договор (заказчик — 3 раб. дня, поставщик товара — 2 раб. дня)');
+    risks.push('Нарушение обязательного приоритета электронного магазина для данной категории');
+    checkBefore.push('Категория действительно включена в перечень ЭМ, утверждённый Правлением Фонда');
+    basis.push('Статья 29 п.4','Статья 58');
+  }
+  else if(special==='itreg' && input.eshopKnown==='unknown'){
+    method = 'Нужно уточнить';
+    clarifications.push('Для товаров/услуг из реестра доверенного ПО и электроники сначала нужно проверить наличие в электронном магазине на день принятия решения — от этого зависит, обязателен ли электронный магазин.');
+    basis.push('Статья 29 п.4');
+  }
+  // 3) SMR/complex works — tender only, regardless of amount
+  else if((special==='smr' || special==='complex')){
+    if(amount==null){
+      method = 'Нужно уточнить';
+      clarifications.push('Для строительно-монтажных и комплексных работ способ закупки — тендер независимо от суммы, но полезно указать сумму для расчёта прочих условий (обеспечение заявки, наблюдатели).');
+    } else {
+      method = 'Тендер (открытый)';
+    }
+    why.push('Запрос ценовых предложений не применяется для строительно-монтажных работ с утверждённой проектно-сметной документацией и для комплексных работ — только тендер.');
+    conditions.push('Нужна утверждённая техническая спецификация / проектно-сметная документация.');
+    docs.push('Тендерная документация','Техническая спецификация / проектно-сметная документация','Проект договора');
+    steps.push('Сформировать лоты и тендерную документацию','Создать тендерную комиссию (не менее 5 членов)','Опубликовать объявление не менее чем за 10 календарных дней до вскрытия заявок');
+    if(amount && amount>75000000) risks.push('Потребуется приглашение наблюдателей (сумма выше 75 млн ₸, а свыше 250 млн ₸ — также НПП «Атамекен»)');
+    checkBefore.push('Техническая спецификация соответствует той, по которой считался бюджет','В документации нет незаконных указаний на конкретный бренд/производителя');
+    basis.push('Статья 49 п.2','Статьи 35, 39-40');
+  }
+  // 4) amount unknown -> ask
+  else if(amount==null){
+    method = 'Нужно уточнить';
+    clarifications.push('Укажите ориентировочную сумму закупки без НДС — большинство порогов (одного источника, ЗЦП, электронный магазин) определяются именно суммой по плану закупок на год.');
+  }
+  // 5) amount-based thresholds
+  else if(amount <= THRESH.singleSourceSimple){
+    method = 'Запрос ценовых предложений (или упрощённая закупка из одного источника)';
+    why.push(`Сумма закупки (${fmt(amount)}) не превышает 1 000 МРП (${fmt(THRESH.singleSourceSimple)} на 2026 год) — это значит, что доступны все стандартные способы, включая упрощённую закупку из одного источника, если это удобнее.`);
+    conditions.push('Для упрощённого одного источника: при наличии отечественного товаропроизводителя приоритет — у него, если он согласен на условия заказчика.');
+    docs.push('Объявление о ЗЦП или решение о закупке из одного источника','Техническая спецификация (при необходимости)');
+    steps.push('Выбрать конкретный способ (ЗЦП — конкурентно, один источник — быстрее)','Опубликовать объявление (для ЗЦП — не менее 5 рабочих дней до вскрытия)');
+    checkBefore.push('Сумма действительно не превышает 1 000 МРП по плану на год для однородных ТРУ (без дробления закупки)');
+    basis.push('Статья 59 п.1 пп.21','Статья 49');
+    if(input.producerPriority==='unknown') clarifications.push('Уточните, есть ли отечественный товаропроизводитель закупаемого товара — при упрощённой закупке из одного источника ему отдаётся приоритет.');
+  }
+  else if(amount <= THRESH.rfq){
+    method = 'Запрос ценовых предложений';
+    why.push(`Сумма закупки (${fmt(amount)}) не превышает 10 000 МРП (${fmt(THRESH.rfq)} на 2026 год) — это прямое основание для применения запроса ценовых предложений.`);
+    conditions.push('Не применяется к СМР с проектно-сметной документацией и комплексным работам.');
+    docs.push('Объявление о закупке способом ЗЦП','Техническая спецификация (при наличии)','Проект договора');
+    steps.push('Опубликовать объявление не менее чем за 5 рабочих дней до вскрытия ценовых предложений','Вскрыть и рассмотреть предложения','Определить победителя по наименьшей цене','Заключить договор');
+    risks.push('Риск дробления закупки, если похожие позиции закупались отдельно в течение года — суммируйте однородные ТРУ');
+    checkBefore.push('Сумма всех однородных ТРУ по плану на год (без НДС) не превышает порог — не дроблена ли закупка');
+    basis.push('Статья 49');
+  }
+  else if(amount <= THRESH.eshop){
+    if(input.eshopKnown==='yes-available'){
+      method = 'Электронный магазин';
+      why.push(`Сумма закупки (${fmt(amount)}) не превышает 20 000 МРП (${fmt(THRESH.eshop)} на 2026 год), а товар/услуга есть в каталоге электронного магазина.`);
+      docs.push('Электронный заказ на поставку','Договор публичной оферты (товары) или договор на основе типового (работы/услуги)');
+      steps.push('Сформировать заказ на поставку в каталоге ЭМ','Дождаться предложений (от 3 до 24 часов)','Подписать заказ/договор в установленные сроки');
+      basis.push('Статья 58');
+    } else if(input.eshopKnown==='yes-not-available'){
+      method = 'Тендер (открытый) или запрос ценовых предложений';
+      why.push(`Сумма (${fmt(amount)}) больше порога ЗЦП (10 000 МРП), но товара нет в электронном магазине — используйте тендер, либо ЗЦП, если сумма при пересчёте однородных позиций укладывается в 10 000 МРП.`);
+      basis.push('Статьи 29, 39-40, 49');
+    } else {
+      method = 'Нужно уточнить';
+      clarifications.push('Сумма закупки допускает электронный магазин (до 20 000 МРП), но нужно проверить наличие товара/услуги в его каталоге, чтобы понять, доступен ли этот способ.');
+      basis.push('Статья 58');
+    }
+    conditions.push('Категория ТРУ должна быть в перечне, утверждённом Правлением Фонда для закупки через ЭМ.');
+  }
+  else {
+    method = 'Тендер (открытый)';
+    why.push(`Сумма закупки (${fmt(amount)}) превышает 20 000 МРП (${fmt(THRESH.eshop)} на 2026 год) — при отсутствии оснований для одного источника или электронного магазина применяется тендер.`);
+    conditions.push('Если техническое решение неочевидно и требует уточнения в диалоге с рынком — рассмотрите двухэтапный (открытый) тендер.');
+    docs.push('Тендерная документация','Техническая спецификация','Проект договора');
+    steps.push('Сформировать лоты и тендерную документацию','Создать тендерную комиссию (не менее 5 членов)','Опубликовать объявление не менее чем за 10 календарных дней до вскрытия заявок','Определить победителя по наименьшей цене (или по особому порядку оценки, вес цены ≥50%)');
+    if(amount>250000000) risks.push('Обязательно приглашение наблюдателей: общественные советы/объединения и НПП «Атамекен» (сумма выше 250 млн ₸)');
+    else if(amount>75000000) risks.push('Обязательно приглашение наблюдателей от общественных объединений/советов (сумма выше 75 млн ₸)');
+    checkBefore.push('Техническая спецификация окончательна и соответствует бюджету','Определён состав тендерной комиссии');
+    basis.push('Статьи 29, 35, 39-44');
+  }
+
+  if(input.producerPriority==='yes' && (method.includes('Тендер') || method.includes('ценовых'))){
+    conditions.push('При закупке товаров тендером/ЗЦП при наличии отечественного товаропроизводителя ему предоставляется приоритет, за рядом исключений.');
+  }
+
+  return {method, why, conditions, docs, steps, responsible, risks, checkBefore, basis, clarifications};
+}
+
+function renderResultCard(res, needText){
+  const isUnclear = res.method === 'Нужно уточнить';
+  let html = `<div class="card result-card">
+    <div class="result-top">
+      <div>
+        ${needText?`<span class="tag">${needText}</span>`:''}
+        <div class="result-method">${res.method}</div>
+        ${res.why.length?`<div class="result-note">${res.why.join(' ')}</div>`:''}
+      </div>
+      <button class="pill-btn ghost" id="wz-retry-btn">Начать заново</button>
+    </div>`;
+
+  if(res.clarifications && res.clarifications.length){
+    html += `<div class="needs-clarify"><b>Нужно уточнить:</b><br>${res.clarifications.map(c=>'• '+c).join('<br>')}</div>`;
+  }
+
+  html += `<div class="result-grid">`;
+  if(res.conditions && res.conditions.length) html += block('Какие условия должны быть выполнены', res.conditions);
+  if(res.docs && res.docs.length) html += block('Какие документы подготовить', res.docs);
+  if(res.steps && res.steps.length) html += block('Что делать дальше', res.steps, true);
+  if(res.risks && res.risks.length) html += block('Возможные риски', res.risks);
+  if(res.checkBefore && res.checkBefore.length) html += block('На что обратить внимание', res.checkBefore, true);
+  html += `</div>`;
+
+  if(res.basis && res.basis.length){
+    html += `<div class="basis-box"><b>Основание в Правилах:</b> ${res.basis.join(' · ')}. Ответственный участник процесса: ${res.responsible}.</div>`;
+  }
+  html += `</div>`;
+  return html;
+
+  function block(title, items, full){
+    return `<div class="result-block${full?' full':''}"><h4>${title}</h4><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  }
+}
+
+/* =====================================================================
+   GUIDED ROUTE
+===================================================================== */
+let routeIndex = 0;
+function renderRouteTrack(){
+  const track = document.getElementById('route-track');
+  track.innerHTML = ROUTE.map((r,i)=>`
+    <div class="route-node ${i===routeIndex?'active':''} ${i<routeIndex?'done':''}" data-i="${i}">
+      <div class="rn-dot">${i+1}</div>
+      <div class="rn-label">${r.short}</div>
+    </div>`).join('');
+  track.querySelectorAll('.route-node').forEach(n=>n.addEventListener('click',()=>{
+    routeIndex = parseInt(n.dataset.i);
+    renderRouteTrack(); renderRouteDetail();
+  }));
+}
+function renderRouteDetail(){
+  const r = ROUTE[routeIndex];
+  document.getElementById('route-detail').innerHTML = `
+    <div class="route-detail-head">
+      <span class="tag">Шаг ${routeIndex+1} из ${ROUTE.length}</span>
+    </div>
+    <h3>${r.title}</h3>
+    <p style="color:var(--muted);margin-top:10px;">${r.explain}</p>
+    <div class="route-detail-body">
+      <div class="rd-block"><h4>Чек-лист</h4><ul>${r.checklist.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+      <div class="rd-block"><h4>Документы</h4><ul>${r.docs.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+      <div class="rd-block"><h4>Действия пользователя</h4><ul>${r.actions.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+      <div class="rd-block"><h4>Типичные ошибки</h4><ul>${r.mistakes.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+      <div class="rd-block full"><h4>Нормативное основание</h4><p style="color:var(--muted);">${r.basis}</p></div>
+    </div>
+    <div class="route-arrows">
+      <button class="pill-btn ghost" id="route-prev" ${routeIndex===0?'disabled':''}>← Предыдущий этап</button>
+      <button class="pill-btn" id="route-next" ${routeIndex===ROUTE.length-1?'disabled':''}>Следующий этап →</button>
+    </div>`;
+  const prev = document.getElementById('route-prev'); const next = document.getElementById('route-next');
+  if(prev) prev.addEventListener('click',()=>{ if(routeIndex>0){routeIndex--; renderRouteTrack(); renderRouteDetail();} });
+  if(next) next.addEventListener('click',()=>{ if(routeIndex<ROUTE.length-1){routeIndex++; renderRouteTrack(); renderRouteDetail();} });
+}
+renderRouteTrack(); renderRouteDetail();
+
+/* =====================================================================
+   KNOWLEDGE BASE
+===================================================================== */
+function renderKBGrid(){
+  document.getElementById('kb-grid').innerHTML = KB.map((k,i)=>`
+    <div class="card kb-card" data-i="${i}">
+      <div class="kb-num">0${i+1<10?'0'+(i+1):(i+1)}</div>
+      <h4>${k.t}</h4>
+      <p>${k.what.slice(0,90)}${k.what.length>90?'…':''}</p>
+    </div>`).join('');
+  document.querySelectorAll('.kb-card').forEach(c=>c.addEventListener('click',()=>openKB(parseInt(c.dataset.i))));
+}
+function openKB(i){
+  const k = KB[i];
+  document.getElementById('kb-list-view').style.display='none';
+  const d = document.getElementById('kb-detail-view');
+  d.style.display='block';
+  d.innerHTML = `
+    <button class="back-link" id="kb-back">← Ко всем темам</button>
+    <div class="card kb-detail">
+      <span class="section-eyebrow">База знаний</span>
+      <h2 style="margin-top:8px;">${k.t}</h2>
+      <div class="kb-detail-body">
+        <div class="kb-block"><h4>Что это?</h4><p>${k.what}</p></div>
+        <div class="kb-block"><h4>Когда применяется?</h4><p>${k.when}</p></div>
+        <div class="kb-block"><h4>Что нужно сделать?</h4><ul>${k.todo.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="kb-block"><h4>Какие есть ограничения?</h4><ul>${k.limits.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="kb-block full"><h4>Пример</h4><p>${k.example}</p></div>
+        <div class="kb-block full"><h4>Типичные ошибки</h4><ul>${k.mistakes.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="kb-block full basis"><b>Нормативное основание:</b> ${k.basis}</div>
+      </div>
+    </div>`;
+  document.getElementById('kb-back').addEventListener('click', ()=>{
+    d.style.display='none'; document.getElementById('kb-list-view').style.display='block';
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+renderKBGrid();
+
+/* =====================================================================
+   SEARCH
+===================================================================== */
+function normalize(s){ return s.toLowerCase().replace(/[«»,.?!;:()]/g,'').trim(); }
+function searchQA(query){
+  const q = normalize(query);
+  if(!q) return [];
+  const qWords = q.split(/\s+/).filter(w=>w.length>2);
+  const scored = QA.map(item=>{
+    const hay = normalize(item.q+' '+item.a);
+    let score = 0;
+    qWords.forEach(w=>{ if(hay.includes(w)) score++; });
+    if(normalize(item.q).includes(q)) score += 5;
+    return {item, score};
+  }).filter(s=>s.score>0).sort((a,b)=>b.score-a.score);
+  return scored.map(s=>s.item);
+}
+function renderSearchResults(list, query){
+  const host = document.getElementById('search-results');
+  if(!query){ host.innerHTML=''; return; }
+  if(list.length===0){ host.innerHTML = `<div class="search-empty">Точного совпадения не нашлось. Попробуйте переформулировать вопрос или откройте раздел «База знаний».</div>`; return; }
+  host.innerHTML = list.slice(0,6).map(r=>`
+    <div class="card search-result">
+      <h4>${r.q}</h4>
+      <p>${r.a}</p>
+      <div class="sr-basis">Основание: ${r.basis}</div>
+    </div>`).join('');
+}
+document.getElementById('search-input').addEventListener('input', e=>{
+  renderSearchResults(searchQA(e.target.value), e.target.value);
+});
+(function(){
+  const ex = document.getElementById('search-examples');
+  const examples = QA.slice(0,5).map(q=>q.q);
+  ex.innerHTML = examples.map(e=>`<button class="chip" data-q="${e.replace(/"/g,'&quot;')}">${e}</button>`).join('');
+  ex.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+    document.getElementById('search-input').value = c.dataset.q;
+    renderSearchResults(searchQA(c.dataset.q), c.dataset.q);
+  }));
+})();
+
+/* =====================================================================
+   CALCULATOR
+===================================================================== */
+const calcState = {amount:null, special:'standard', groundIds:[], urgency:'planned', eshopKnown:'unknown', producerPriority:'unknown'};
+function renderCalcForm(){
+  const groundChecks = SS_GROUNDS.filter(g=>g.id!=='none').map(g=>`
+    <label class="wz-check ${calcState.groundIds.includes(g.id)?'selected':''}" style="margin-bottom:8px;display:flex;">
+      <input type="checkbox" data-calc-ground="${g.id}" ${calcState.groundIds.includes(g.id)?'checked':''}>
+      <span><strong>${g.label}</strong>${g.hint?`<span> — ${g.hint}</span>`:''}</span>
+    </label>`).join('');
+
+  document.getElementById('calc-form').innerHTML = `
+    <div class="calc-field">
+      <label>Ориентировочная сумма закупки, ₸ (без НДС, за год)</label>
+      <input type="number" id="calc-amount" placeholder="Например: 25000000" value="${calcState.amount||''}">
+      <div class="calc-hint">1 МРП (2026) = ${fmt(MRP)}</div>
+    </div>
+    <div class="calc-field">
+      <label>Особенности предмета закупки</label>
+      <select id="calc-special">
+        <option value="standard">Обычный товар/работа/услуга</option>
+        <option value="smr">СМР с проектно-сметной документацией</option>
+        <option value="complex">Комплексные работы</option>
+        <option value="itreg">ПО / электроника из реестра доверенных</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>Наличие в электронном магазине</label>
+      <select id="calc-eshop">
+        <option value="unknown">Не проверяли</option>
+        <option value="yes-available">Есть в электронном магазине</option>
+        <option value="yes-not-available">Проверяли — отсутствует</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>Срочность</label>
+      <select id="calc-urgency">
+        <option value="planned">Планово</option>
+        <option value="urgent">Срочно</option>
+        <option value="emergency">Авария / ЧС</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>Отечественный товаропроизводитель</label>
+      <select id="calc-producer">
+        <option value="unknown">Не уверен(а)</option>
+        <option value="yes">Есть</option>
+        <option value="no">Нет / закупаются работы или услуги</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>Основания для закупки у конкретного поставщика (если есть)</label>
+      ${groundChecks}
+    </div>
+  `;
+  document.getElementById('calc-special').value = calcState.special;
+  document.getElementById('calc-eshop').value = calcState.eshopKnown;
+  document.getElementById('calc-urgency').value = calcState.urgency;
+  document.getElementById('calc-producer').value = calcState.producerPriority;
+
+  document.getElementById('calc-amount').addEventListener('input', e=>{ calcState.amount=parseFloat(e.target.value)||null; renderCalcResult(); });
+  document.getElementById('calc-special').addEventListener('change', e=>{ calcState.special=e.target.value; renderCalcResult(); });
+  document.getElementById('calc-eshop').addEventListener('change', e=>{ calcState.eshopKnown=e.target.value; renderCalcResult(); });
+  document.getElementById('calc-urgency').addEventListener('change', e=>{ calcState.urgency=e.target.value; renderCalcResult(); });
+  document.getElementById('calc-producer').addEventListener('change', e=>{ calcState.producerPriority=e.target.value; renderCalcResult(); });
+  document.querySelectorAll('[data-calc-ground]').forEach(cb=>cb.addEventListener('change',()=>{
+    const id = cb.dataset.calcGround;
+    if(cb.checked){ if(!calcState.groundIds.includes(id)) calcState.groundIds.push(id); }
+    else { calcState.groundIds = calcState.groundIds.filter(x=>x!==id); }
+    renderCalcForm(); renderCalcResult();
+  }));
+}
+function renderCalcResult(){
+  const res = decideMethod(calcState);
+  document.getElementById('calc-result').innerHTML = `
+    <div class="section-eyebrow">Рекомендация</div>
+    <div class="result-method" style="margin-top:6px;font-size:1.3rem;">${res.method}</div>
+    ${res.why.length?`<p style="color:var(--muted);margin-top:10px;font-size:.9rem;">${res.why.join(' ')}</p>`:''}
+    ${res.clarifications.length?`<div class="needs-clarify" style="margin-top:16px;">${res.clarifications.map(c=>'• '+c).join('<br>')}</div>`:''}
+    ${res.basis.length?`<div class="basis-box" style="margin-top:20px;"><b>Основание:</b> ${res.basis.join(' · ')}</div>`:''}
+  `;
+}
+renderCalcForm(); renderCalcResult();
+
+/* =====================================================================
+   CHECKLISTS
+===================================================================== */
+function renderChecklists(){
+  document.getElementById('checklist-grid').innerHTML = CHECKLISTS.map((c,ci)=>`
+    <div class="card checklist-card">
+      <div class="cl-head"><h3>${c.title}</h3><span class="cl-pct" id="cl-pct-${ci}">0%</span></div>
+      <div class="cl-bar"><div class="cl-bar-fill" id="cl-bar-${ci}" style="width:0%"></div></div>
+      ${c.items.map((it,ii)=>`
+        <div class="cl-item" id="cl-item-${ci}-${ii}">
+          <input type="checkbox" id="cl-cb-${ci}-${ii}" data-ci="${ci}" data-ii="${ii}">
+          <label for="cl-cb-${ci}-${ii}">${it}</label>
+        </div>`).join('')}
+    </div>`).join('');
+  document.querySelectorAll('[data-ci]').forEach(cb=>cb.addEventListener('change',()=>updateChecklist(cb.dataset.ci)));
+}
+function updateChecklist(ci){
+  const boxes = document.querySelectorAll(`[data-ci="${ci}"]`);
+  let checked=0;
+  boxes.forEach(b=>{
+    const item = document.getElementById(`cl-item-${ci}-${b.dataset.ii}`);
+    if(b.checked){ checked++; item.classList.add('checked'); } else { item.classList.remove('checked'); }
+  });
+  const pct = Math.round(checked/boxes.length*100);
+  document.getElementById(`cl-pct-${ci}`).textContent = pct+'%';
+  document.getElementById(`cl-bar-${ci}`).style.width = pct+'%';
+}
+renderChecklists();
+
+</script>
+</body>
+</html>
